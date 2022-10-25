@@ -1,9 +1,11 @@
 import pandas as pd
+from api_twiter import APITwiter
 
+#Ler dados do arquivo CSV
 data = pd.read_csv(r'AppleStore.csv', sep=',', encoding='ISO-8859-1', index_col=False)
 
-
 def report_gen(data_table):
+
     data_table.columns = [column.replace(" ", "_") for column in data_table.columns]
     data_table.query('prime_genre == "Music" or prime_genre == "Book"', inplace=True)
     data_table = data_table[['id', 'track_name', 'size_bytes', 'price', 'prime_genre', 'rating_count_tot']]
@@ -13,9 +15,18 @@ def report_gen(data_table):
 
     frequency = top10['prime_genre'].value_counts()
     top10['n_citacoes'] = str(frequency['Music'] if frequency['Music'] else frequency['Book'])
-    top10.to_csv('out.csv', sep=',', index=False)
-    top10.to_json(r'out.json', orient="index")
-    print(top10)
+
+    api_music = APITwiter('Music')
+    data_music = api_music.main()
+    count_music = len([x['title'] for x in data_music['data']])
+
+    api_book = APITwiter('Book')
+    data_book = api_book.main()
+    count_book = len([x['title'] for x in data_book['data']])
+
+    #top10.to_csv('out.csv', sep=',', index=False)
+    #top10.to_json(r'out.json', orient="index")
+    #print(top10)
 
     #print(str(frequency['Music'] if frequency['Music'] > frequency['Book'] else frequency['Book']))
 
@@ -48,3 +59,6 @@ if (tabela['prime_genre'] == 'News').any():
     print(tabela['prime_genre'].count())
     print(tabela['rating_count_tot'].max())
     '''
+
+if __name__ == '__main__':
+    ...
