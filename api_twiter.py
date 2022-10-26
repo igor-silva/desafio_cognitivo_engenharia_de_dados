@@ -1,8 +1,16 @@
 import requests
-import os
-import json
 
-
+'''
+============================================================================
+Class: APITwiter
+Description: Responsável por gerar integração com API do Twiter,
+            retornar dados com busca dinãmica.
+Params: args=term
+Autor: Igor Silva
+Date: 25/10/2022
+Updates: 
+===============================================================================
+'''
 class APITwiter:
 
     def __init__(self, args):

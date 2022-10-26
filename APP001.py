@@ -1,9 +1,20 @@
 import pandas as pd
 from api_twiter import APITwiter
+from db import DB
 
 #Ler dados do arquivo CSV
 data = pd.read_csv(r'AppleStore.csv', sep=',', encoding='ISO-8859-1', index_col=False)
 
+'''
+============================================================================
+Function: report_gen
+Description: Gerar reltório de dados estraídos de um arquivo CSV
+Params: data_table
+Autor: Igor Silva
+Date: 25/10/2022
+Updates: 
+===============================================================================
+'''
 def report_gen(data_table):
 
     data_table.columns = [column.replace(" ", "_") for column in data_table.columns]
@@ -13,8 +24,8 @@ def report_gen(data_table):
     top10 = data_table[['id', 'track_name', 'size_bytes', 'price', 'prime_genre', 'rating_count_tot']][:10].sort_values(
         by='rating_count_tot', ascending=False)
 
-    frequency = top10['prime_genre'].value_counts()
-    top10['n_citacoes'] = str(frequency['Music'] if frequency['Music'] else frequency['Book'])
+    #frequency = top10['prime_genre'].value_counts()
+    #top10['n_citacoes'] = str(frequency['Music'] if frequency['Music'] else frequency['Book'])
 
     api_music = APITwiter('Music')
     data_music = api_music.main()
@@ -24,41 +35,16 @@ def report_gen(data_table):
     data_book = api_book.main()
     count_book = len([x['title'] for x in data_book['data']])
 
-    #top10.to_csv('out.csv', sep=',', index=False)
-    #top10.to_json(r'out.json', orient="index")
-    #print(top10)
+    top10['n_citacoes'] = count_music + count_book
 
-    #print(str(frequency['Music'] if frequency['Music'] > frequency['Book'] else frequency['Book']))
+    top10.to_csv('out.csv', sep=',', index=False)
+    top10.to_json(r'out.json', orient="records")
 
+    #insert_data = DB()
+    #insert_data.main()
+   #print(top10)
 
-def report_news(data_table):
-    # Substituo espaços por '_'
-    data_table.columns = [column.replace(" ", "_") for column in data.columns]
-
-    # Execute filtrates
-    data_table.query('prime_genre == "News"', inplace=True)
-
-    max_news = data_table['rating_count_tot'].max()
-    track_name = data_table.loc[data_table['rating_count_tot'] == max_news, 'track_name'].values[0]
-
-    data_table[['id', 'track_name', 'size_bytes', 'price', 'prime_genre', 'rating_count_tot']][:10].sort_values(
-        by='rating_count_tot', ascending=False)
-
-    # print(max_News)
-    # print(track_Name)
-
-    print(
-        f'Aplicação da categoria News com maior quantidade de avaliações: {max_news} | Total de avaliações de {track_name}')
-
-
-# report_News(data)
 report_gen(data)
-'''
-if (tabela['prime_genre'] == 'News').any():
-    print(tabela.loc[tabela['prime_genre'] == 'News', 'prime_genre'].values[0])
-    print(tabela['prime_genre'].count())
-    print(tabela['rating_count_tot'].max())
-    '''
 
 if __name__ == '__main__':
     ...
