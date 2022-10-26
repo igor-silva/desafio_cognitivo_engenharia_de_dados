@@ -2,8 +2,8 @@ import requests
 
 '''
 ============================================================================
-Class: APITwiter
-Description: Responsável por gerar integração com API do Twiter,
+Class: APITwitter
+Description: Responsável por gerar integração com API do Twitter,
             retornar dados com busca dinãmica.
 Params: args=term
 Autor: Igor Silva
@@ -11,7 +11,7 @@ Date: 25/10/2022
 Updates: 
 ===============================================================================
 '''
-class APITwiter:
+class APITwitter:
 
     def __init__(self, args):
         self.bearer_token = 'AAAAAAAAAAAAAAAAAAAAAAxIigEAAAAAo09Wig9u4UpL9fBwB3Kr1t7mREQ%3DQyzxC8WOFnRlqk62UXPzpd0VXlA6QyCjEenddAzRvh5UzcFxTO'

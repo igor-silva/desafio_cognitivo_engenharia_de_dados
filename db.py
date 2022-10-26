@@ -37,12 +37,8 @@ class DB:
 
         for row in data_json:
             keys = tuple(row[c] for c in columns)
-            print(keys)
             self.cur.execute('INSERT INTO applestore VALUES(?, ?, ?, ?, ?)', keys)
-            print(f'{row["id"]} dados inseridos com Sucesso!')
 
-        self.con.commit()
-        self.con.close()
 
     def selectAll(self):
         self.cur.execute('select * from applestore')
@@ -51,12 +47,10 @@ class DB:
         self.con.close()
         print(data)
 
-
     def main(self):
         self.insertData()
         self.selectAll()
 
 
 if __name__ == '__main__':
-    insert_data = DB()
-    insert_data.main()
+    ...
